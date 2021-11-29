@@ -1,0 +1,13 @@
+BROKER SCHEMA com.esb.kbl
+
+
+CREATE COMPUTE MODULE AccountDetails_msgflow_Compute1
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET Environment.AuditRecord.BackendResponse		= InputRoot.XMLNSC;	
+	 	SET OutputRoot.XMLNSC							= InputRoot.XMLNSC;
+		SET Environment.AuditRecord.Response			= OutputRoot.XMLNSC;	
+		PROPAGATE TO TERMINAL 'out1';
+		RETURN TRUE;
+	END;
+END MODULE;

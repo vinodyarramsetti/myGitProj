@@ -1,0 +1,17 @@
+BROKER SCHEMA com.esb.kbl
+
+
+CREATE COMPUTE MODULE AccountDetails_msgflow_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET Environment.AuditRecord.NodeName                       = BrokerName;
+		SET Environment.AuditRecord.IntegrationServer              = ExecutionGroupLabel;
+		SET Environment.AuditRecord.FlowName                       = MessageFlowLabel;
+		SET Environment.AuditRecord.ApplicationName                = ApplicationLabel;
+		SET Environment.AuditRecord.Request                        = InputRoot.XMLNSC;
+		SET OutputRoot.XMLNSC                                      = InputRoot.XMLNSC;
+		SET OutputLocalEnvironment.Destination.HTTPS.RequestURL = 'https://f10dev.ktkbank.com:20000/FISERVLET/fihttp';
+		PROPAGATE TO TERMINAL 'out1';
+		RETURN TRUE;
+	END;
+END MODULE;
